@@ -1,14 +1,29 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MazeSolver {
     public static void main(String[] args) {
+        
         int[][] maze1 = {
+            // startRow 0
+            // startCol 1
             {1, 0, 0, 0, 1, 1},
             {0, 0, 1, 0, 0, 0},
             {1, 0, 0, 1, 0, 1},
             {1, 0, 0, 1, 3, 1},
         };
 
+        // [{0, 2}, {1, 1}]
+
+        boolean[][] visited = new boolean[maze1.length][maze1[0].length];
+        List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
+        for(int[] neighbor : neighbors) {
+            System.out.println(Arrays.toString(neighbor));
+        }
+
+        // row 1
+        // col 1
         int[][] maze2 = {
             {0, 0, 0, 1, 1},
             {0, 1, 1, 0, 0},
@@ -45,6 +60,34 @@ public class MazeSolver {
         return false;
     }
 
+    // [{}, {}]
+    public static List<int[]> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited) {
+        int[][] moves = {
+            {-1, 0},    // UP
+            {1, 0},     // DOWN
+            {0, 1},     // RIGHT
+            {0, -1}     //LEFT
+        };
+
+        List<int[]> neighbors = new ArrayList<>();
+
+        for(int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+            if(newRow >= 0 &&
+               newRow < maze.length &&
+               newCol >= 0 &&
+               newCol < maze[0].length &&
+               maze[newRow][newCol] != 1 &&
+               !visited[newRow][newCol]) {
+                neighbors.add(new int[]{newRow, newCol});
+            }
+        }
+
+        return neighbors;
+    }
+
     /**
      * Returns a valid path from the starting location to a treasure in a maze
      * if one exists or null if there is no path.
@@ -73,9 +116,9 @@ public class MazeSolver {
      * @return a list of locations indiciating any valid path, or null if there is no valid path.
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
-    public static List<Location> solve(int row, int col, int[][] maze) {
-        // You will solve this with a partner
-        // Please do not begin work on this until directed to!
-        return null;
-    }
+    // public static List<Location> solve(int row, int col, int[][] maze) {
+    //     // You will solve this with a partner
+    //     // Please do not begin work on this until directed to!
+    //     return null;
+    // }
 }
