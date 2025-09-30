@@ -4,26 +4,32 @@ import java.util.Arrays;
 
 public class MazeSolver {
     public static void main(String[] args) {
-        int[][] maze1 = {
-            {1, 0, 0, 0, 1, 1},
-            {0, 0, 1, 0, 0, 0},
-            {1, 0, 0, 1, 0, 1},
-            {1, 0, 0, 1, 3, 1},
-        };
+        Location myLocation = new Location(4,7);
+        // System.out.println(myLocation);
 
-        boolean[][] visited = new boolean[maze1.length][maze1[0].length];
-        List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
-        for(int[] neighbor : neighbors){
-            System.out.println(Arrays.toString(neighbor));
-        }
+        Location myLocation2 = new Location(myLocation.row()+1,myLocation.col());
+        System.out.println(myLocation.equals(myLocation2));
 
-        int[][] maze2 = {
-            {0, 0, 0, 1, 1},
-            {0, 1, 1, 0, 0},
-            {0, 0, 1, 0, 1},
-            {0, 0, 1, 3, 1},
-            {1, 1, 1, 1, 1}
-        };
+        // int[][] maze1 = {
+        //     {1, 0, 0, 0, 1, 1},
+        //     {0, 0, 1, 0, 0, 0},
+        //     {1, 0, 0, 1, 0, 1},
+        //     {1, 0, 0, 1, 3, 1},
+        // };
+
+        // boolean[][] visited = new boolean[maze1.length][maze1[0].length];
+        // List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
+        // for(int[] neighbor : neighbors){
+        //     System.out.println(Arrays.toString(neighbor));
+        // }
+
+        // int[][] maze2 = {
+        //     {0, 0, 0, 1, 1},
+        //     {0, 1, 1, 0, 0},
+        //     {0, 0, 1, 0, 1},
+        //     {0, 0, 1, 3, 1},
+        //     {1, 1, 1, 1, 1}
+        // };
     }
 
     /**
