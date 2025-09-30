@@ -1,13 +1,26 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MazeSolver {
     public static void main(String[] args) {
+        // startRow 0
+        // startCol 1
         int[][] maze1 = {
             {1, 0, 0, 0, 1, 1},
             {0, 0, 1, 0, 0, 0},
             {1, 0, 0, 1, 0, 1},
             {1, 0, 0, 1, 3, 1},
         };
+
+        // [{0, 2}, {1, 1}] <-- what we expect to print; it worked!
+
+        boolean[][] visited = new boolean[maze1.length][maze1[0].length];                       // STEP 8
+        List<int[]> neighbors = validNeighbors(0,1, maze1, visited);          // STEP 9
+
+        for (int[] neighbor : neighbors) {                                                      // STEP 10
+            System.out.println(Arrays.toString(neighbor));
+        }
 
         int[][] maze2 = {
             {0, 0, 0, 1, 1},
@@ -43,6 +56,34 @@ public class MazeSolver {
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
         return false;
+    }
+
+    // return a list where inside it is integer arrays. ex, for startRow 0 & startCol 1 -> [{0, 2}, {1, 1}]
+    public static List<int[]> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited) {    // STEP 1
+        int[][] moves = {                                                                                        // STEP 2
+            {-1, 0},     // UP
+            {1, 0},      // DOWN
+            {0, 1},      // RIGHT
+            {0, -1}      // LEFT
+        };
+
+        List<int[]> neighbors = new ArrayList<>();                                                               // STEP 3: make list
+
+        for (int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];                                                                     // STEP 4 --> check surroundings; for loop
+
+            if (newRow >= 0 &&                                                                                   // STEP 5 --> checking we're inbounds & no wall && not visited. (recommends this method!)
+                newRow < maze.length &&
+                newCol >= 0 &&
+                newCol < maze[0].length &&
+                maze[newRow][newCol] != 1 &&
+                !visited[newRow][newCol]) {
+                    neighbors.add(new int[]{newRow, newCol});                                                   // STEP 6: add to list
+                }
+        }
+
+        return neighbors;                                                                                       // STEP 7: return list 
     }
 
     /**
