@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MazeSolver {
@@ -42,8 +44,40 @@ public class MazeSolver {
      */
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
+        if(maze[row][col] == 1 || row >= maze.length || col >= maze[0].length || row < 0 || col <0){
+            throw new IllegalArgumentException();
+        }
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        for(int[] neighbor: validNeighbors(row, col, maze, visited)){
+            System.out.println(Arrays.toString(neighbor));
+            
+        }
+
+
         return false;
     }
+
+    public static List<int[]> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited){
+        int[][] directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+        List<int[]> neighbors = new ArrayList<>();
+        for(int[] dir : directions){
+            int newRow = startRow + dir[0];
+            int newCol = startCol + dir[1];
+
+            if(newRow >= 0 &&
+                newRow < maze.length &&
+                newCol >= 0 &&
+                newCol < maze[0].length &&
+                maze[newRow][newCol] != 1 &&
+                !visited[newRow][newCol]){
+                    neighbors.add(new int[] {newRow, newCol});
+                }
+           
+            
+        }   
+        return neighbors;
+    }
+
 
     /**
      * Returns a valid path from the starting location to a treasure in a maze
