@@ -56,6 +56,32 @@ public class MazeSolverTest {
     }
 
     // TODO 1: Write more tests for reachable
+    @Test
+    void testReachableValidPathTwoRegionReturnsFalse() {
+        int[][] maze = {
+            {0, 0, 0, 1, 1},
+            {0, 1, 1, 0, 0},
+            {0, 0, 1, 0, 1},
+            {0, 0, 1, 3, 1},
+            {1, 1, 1, 1, 1}
+        };
+
+        assertFalse(MazeSolver.reachable(0, 0, maze));
+    }
+
+    @Test
+    void testReachableStartingOutOfBoundsThrowsIllegalArgumentException() {
+        int[][] maze = {
+            {1, 0, 0, 0, 1, 1},
+            {0, 0, 1, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 1, 3, 1},
+        };
+
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.reachable(5, 6, maze)
+        );
+    }
 
     // TODO 2: Write good tests for solve
 }
