@@ -56,6 +56,7 @@ public class MazeSolverTest {
     }
 
     // TODO 1: Write more tests for reachable
+    
 
     // TODO 2: Write good tests for solve
 }
