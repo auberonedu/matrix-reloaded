@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class MazeSolver {
@@ -41,8 +42,36 @@ public class MazeSolver {
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
     public static boolean reachable(int row, int col, int[][] maze) {
-        // We will solve this together as a class.
+        if (maze[row][col]==1||row>=0||row<maze.length||col>=0||col<maze[0].length) throw new IllegalArgumentException();
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        List<int[]> neighbours = validNeighbours(row, col, maze, visited);
+        for (int[] moves : neighbours) {
+            if (visited[moves[0]][moves[1]]==false) {
+                visited[moves[0]][moves[1]] = true;
+                if (maze[moves[0]][moves[1]]==3) {
+                    return true;
+                }
+            }
+        }
         return false;
+    }
+
+    public static List<int[]> validNeighbours(int row, int col, int[][] maze, boolean[][] visited) {
+        int[][] directions = {{-1,0},{1,0},{0,-1},{0,1}};
+        List<int[]> neighbours = new ArrayList<>();
+        for (int[] dir : directions) {
+            int NEWROW = row + dir[0];
+            int NEWCOL = col + dir[1];
+            if (
+                NEWROW>=0&&
+                NEWROW<maze.length&&
+                NEWCOL>=0&&
+                NEWCOL<maze[0].length&&
+                maze[NEWROW][NEWCOL] != 1&&
+                !visited[NEWROW][NEWCOL]
+            ) neighbours.add(new int[]{NEWROW, NEWCOL});
+        }
+        return neighbours;
     }
 
     /**
