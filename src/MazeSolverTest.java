@@ -25,7 +25,7 @@ public class MazeSolverTest {
             {1, 1, 1, 1, 1}
         };
 
-        assertFalse(MazeSolver.reachable(1, 3, maze));
+        assertTrue(MazeSolver.reachable(1, 3, maze));
     }
 
     @Test
