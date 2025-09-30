@@ -55,6 +55,31 @@ public class MazeSolver {
      */
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length) {                                 // STEP 14-CONTINUED
+            throw new IllegalArgumentException("Out of bounds location: " + row + "," + col);
+        }
+        if (maze[row][col] == 1) {                                                                               // STEP 15
+            throw new IllegalArgumentException("Location is in wall: " + row + "," + col);
+        }
+
+        boolean[][] visited = new boolean[maze.length][maze[0].length];                                          // STEP 11
+        return reachable(row, col, maze, visited);                                                               // STEP 13
+    }
+
+    private static boolean reachable(int row, int col, int[][] maze, boolean[][] visited)                         // STEP 12
+    {
+        // make instant/early return base cases: [1]out of bound, [2]wall, [3]visited, [4]treasure-is-found       // STEP 14
+        if (maze[row][col] == 3) return true;                                                                     // STEP 16 (visited taken care of in validNeighbors)
+
+        visited[row][col] = true;                                                                                 // STEP 17
+
+        List<int[]> neighbors = validNeighbors(row, col, maze, visited);                                          // STEP 18
+
+        for (int[] neighbor : neighbors) {
+            if (reachable(neighbor[0], neighbor[1], maze, visited)) {                                             // STEP 19
+                return true;
+            }
+        }
         return false;
     }
 
