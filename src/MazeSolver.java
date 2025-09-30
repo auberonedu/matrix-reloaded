@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MazeSolver {
@@ -8,6 +10,12 @@ public class MazeSolver {
             {1, 0, 0, 1, 0, 1},
             {1, 0, 0, 1, 3, 1},
         };
+
+        List<int[]> test = validNeighbors(0, 1, maze1, new boolean[maze1.length][maze1[0].length]);
+
+        for (int[] neighbor : test) {
+            System.out.println(Arrays.toString(neighbor));
+        }
 
         int[][] maze2 = {
             {0, 0, 0, 1, 1},
@@ -44,6 +52,28 @@ public class MazeSolver {
         // We will solve this together as a class.
         return false;
     }
+
+    public static List<int[]> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited){
+        int[][] moves = {
+            {-1, 0},
+            {1 , 0},
+            {0, 1},
+            {0, -1}
+        };
+
+        List<int[]> neighbors = new ArrayList<>();
+
+        for (int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+            if(newRow < maze.length && newRow >= 0 && newCol < maze[0].length && newCol >= 0 && maze[newRow][newCol] != 1 && !visited[newRow][newCol]){
+                neighbors.add(new int[]{newRow, newCol});
+            }
+        }
+
+        return neighbors;
+    }   
 
     /**
      * Returns a valid path from the starting location to a treasure in a maze
