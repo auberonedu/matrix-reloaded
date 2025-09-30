@@ -4,6 +4,10 @@ import java.util.List;
 
 public class MazeSolver {
     public static void main(String[] args) {
+        // Location myLocation = new Location(4, 7);
+        // Location location2 = new Location(3, 8);
+        // myLocation = new Location(myLocation.row() + 1, myLocation.col());
+        // System.out.println(myLocation.equals(location2));
         int[][] maze1 = {
             {1, 0, 0, 0, 1, 1},
             {0, 0, 1, 0, 0, 0},
@@ -11,13 +15,13 @@ public class MazeSolver {
             {1, 0, 0, 1, 3, 1},
         };
 
-        boolean[][] visited = new boolean[maze1.length][maze1[0].length];
-        List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
+        // boolean[][] visited = new boolean[maze1.length][maze1[0].length];
+        // List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
 
-        for(int[] n : neighbors)
-        {
-            System.out.println(Arrays.toString(n));
-        }
+        // for(int[] n : neighbors)
+        // {
+        //     System.out.println(Arrays.toString(n));
+        // }
 
         int[][] maze2 = {
             {0, 0, 0, 1, 1},
@@ -52,8 +56,36 @@ public class MazeSolver {
      */
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
-        
+        if(row < 0 || col < 0 || row >= maze.length || col >= maze[0].length)
+        {
+            throw new IllegalArgumentException("Out of bounds location" + row + ", " + col);
+        }
+        if(maze[row][col] == 1)
+        {
+            throw new IllegalArgumentException("Location is a wall" + row + ", " + col);
+        }
 
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        return reachable(row, col, maze, visited);
+    }
+
+    private static boolean reachable(int row, int col, int[][] maze, boolean[][] visited)
+    {
+        if(maze[row][col] == 3)
+        {
+            return true;
+        }
+
+        visited[row][col] = true;
+        List<int[]> neightbors = validNeighbors(row, col, maze, visited);
+
+        for(int[] n : neightbors)
+        {
+            if(reachable(n[0], n[1], maze, visited))
+            {
+                return true;
+            }
+        }
 
         return false;
     }
