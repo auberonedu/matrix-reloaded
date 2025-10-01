@@ -16,11 +16,11 @@ public class MazeSolver {
             {1, 0, 0, 1, 0, 3},
         };
 
-        // List<Location> test = solve(0, 1, maze1);
+        List<Location> test = solve(0, 1, maze1);
 
-        // for (Location neighbor : test) {
-        //     System.out.println(neighbor);
-        // }
+        for (Location neighbor : test) {
+            System.out.println(neighbor);
+        }
 
         int[][] maze2 = {
             {0, 0, 0, 1, 1},
@@ -30,14 +30,14 @@ public class MazeSolver {
             {1, 1, 1, 1, 1}
         };
                 
-        List<Location> test2 = solve(0, 1, maze2);
-        try {
-            for (Location neighbor : test2) {
-                System.out.println(neighbor);
-            }
-        } catch (Exception e) {
-            System.out.println("Test is null");
-        }
+        // List<Location> test2 = solve(0, 1, maze2);
+        // try {
+        //     for (Location neighbor : test2) {
+        //         System.out.println(neighbor);
+        //     }
+        // } catch (Exception e) {
+        //     System.out.println("Test is null");
+        // }
 
 
     }
