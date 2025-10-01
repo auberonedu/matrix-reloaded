@@ -4,31 +4,35 @@ import java.util.List;
 
 public class MazeSolver {
     public static void main(String[] args) {
-        // int[][] maze1 = {
-        //     {1, 0, 0, 0, 1, 1},
-        //     {0, 0, 1, 0, 0, 0},
-        //     {1, 0, 0, 1, 0, 1},
-        //     {1, 0, 0, 1, 3, 1},
-        // };
+        int[][] maze1 = {
+            {1, 0, 0, 0, 1, 1},
+            {0, 0, 1, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 1, 3, 1},
+        };
 
-        // int[][] maze2 = {
-        //     {0, 0, 0, 1, 1},
-        //     {0, 1, 1, 0, 0},
-        //     {0, 0, 1, 0, 1},
-        //     {0, 0, 1, 3, 1},
-        //     {1, 1, 1, 1, 1}
-        // };
+        int[][] maze2 = {
+            {0, 0, 0, 1, 1},
+            {0, 1, 1, 0, 0},
+            {0, 0, 1, 0, 1},
+            {0, 0, 1, 3, 1},
+            {1, 1, 1, 1, 1}
+        };
 
         // boolean[][] visited = new boolean[maze1.length][maze1[0].length];
         // List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
         // for(int[] neighbor : neighbors) {
         //     System.out.println(Arrays.toString(neighbor));
         // }
+        List<Location> path = solve(0, 1, maze1);
+        for(Location point : path) {
+            System.out.println(point.toString());
+        };
 
-        Location myLocation = new Location(4, 7);
-        Location location2 = new Location(3, 8);
-        myLocation = new Location(3, 8);
-        System.out.println(myLocation.equals(location2));
+        // Location myLocation = new Location(4, 7);
+        // Location location2 = new Location(3, 8);
+        // myLocation = new Location(3, 8);
+        // System.out.println(myLocation.equals(location2));
     }
 
     /**
@@ -134,20 +138,24 @@ public class MazeSolver {
             return null;
         }
         List<Location> path = new ArrayList<Location>();
-        return solve(row, col, maze, path);
+        List<Location> seen = new ArrayList<Location>();
+        return solve(row, col, maze, path, seen);
     }
-    public static List<Location> solve(int row, int col, int[][] maze, List<Location> path) {
+    public static List<Location> solve(int row, int col, int[][] maze, List<Location> path, List<Location> seen) {
         if(maze[row][col] == 3) {
             path.add(new Location(row, col));
             return path;
-        };
-        path.add(new Location(row, col));
-        List<Location> moves = moveOptions(row, col, maze, path);
-        for(Location move : moves) {
-            path = solve(move.row(), move.col(), maze, path);
         }
-        path.removeLast();
-        return path;
+        seen.add(new Location(row, col));
+        List<Location> moves = moveOptions(row, col, maze, seen);
+        for(Location move : moves) {
+            if(solve(move.row(), move.col(), maze, path, seen) != null){
+                path.addFirst(move);
+                return path;
+            } 
+        }
+        
+        return null;
     }
     public static List<Location> moveOptions(int startRow, int startCol, int[][] maze, List<Location> path) {
         int[][] moves = {
@@ -163,7 +171,7 @@ public class MazeSolver {
             int newRow = startRow + move[0];
             int newCol = startCol + move[1];
 
-            if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length && maze[newRow][newCol] != 1 && path.contains(new Location(newRow, newCol))){
+            if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length && maze[newRow][newCol] != 1 && !path.contains(new Location(newRow, newCol))){
                 neighbors.add(new Location(newRow, newCol));
             }
         }
