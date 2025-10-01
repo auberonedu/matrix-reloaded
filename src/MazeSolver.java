@@ -157,8 +157,13 @@ public class MazeSolver {
         List<Location> seen = new ArrayList<Location>();
         return solve(row, col, maze, seen);
     }
+    // recurse for solve
+    // searches from start to end
+    // records from end to start, but puts the latest on in front
     public static List<Location> solve(int row, int col, int[][] maze, List<Location> seen) {
+        // base case not covered in reachable
         if(maze[row][col] == 3) {
+            // makes the list to be passed down
             List<Location> endPath = new ArrayList<Location>();
             endPath.add(new Location(row, col));
             return endPath;
@@ -166,15 +171,19 @@ public class MazeSolver {
         seen.add(new Location(row, col));
         List<Location> moves = moveOptions(row, col, maze, seen);
         for(Location move : moves) {
+            // saves started path
             List<Location> result = solve(move.row(), move.col(), maze, seen);
+            // if path is found it adds to the front
             if(result != null){
+                // adds parent to start of list
                 result.addFirst(new Location(row, col));
                 return result;
             } 
         }
-        
+        // returns null if path is not found
         return null;
     }
+    // get moves
     public static List<Location> moveOptions(int startRow, int startCol, int[][] maze, List<Location> path) {
         int[][] moves = {
             {-1, 0},
