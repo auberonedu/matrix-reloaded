@@ -119,7 +119,6 @@ public class MazeSolver {
         for (int[] moves : neighbours) {
             return solve(moves[0], moves[1], maze, visited, path);
         }
-        System.out.println(path.toString());
         return null;
     }
 }

@@ -57,10 +57,39 @@ public class MazeSolverTest {
         );
     }
 
-    // TODO 1: Write more tests for reachable
+    @Test
+    void testReachableNoValidPathReturnsTrueOnTreasure() {
+        int[][] maze = {
+            {3}
+        };
+
+        assertTrue(MazeSolver.reachable(0, 0, maze));
+    }
 
     @Test
-    void testReachableValidPathOneRegionReturnsList() {
+    void testReachableNoValidPathReturnsTrueOnTreasure() {
+        int[][] maze = {
+            {1}
+        };
+
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.reachable(0, 0, maze)
+        );
+    }
+
+    @Test
+    void testReachableNoValidPathReturnsLongPath() {
+        int[][] maze = {
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0},
+            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+        };
+
+        assertTrue(MazeSolver.reachable(0, 0, maze));
+    }
+
+    @Test
+    void testSolveableValidPathOneRegionReturnsList() {
         int[][] maze = {
             {1, 0, 1, 0},
             {1, 0, 1, 0},
@@ -78,7 +107,48 @@ public class MazeSolverTest {
     }
 
     @Test
-    void testReachableValidPathOneRegionReturnsNull() {
+    void testSolveableValidPathTwoRegionReturnsList() {
+        int[][] maze = {
+            {1, 0, 0, 0},
+            {1, 0, 1, 0},
+            {1, 0, 1, 0},
+            {1, 0, 0, 3}
+        };
+        assertEquals(List.of(
+            new Location(0, 1),
+            new Location(1, 1),
+            new Location(2, 1),
+            new Location(3, 1),
+            new Location(3, 2),
+            new Location(3, 3)),
+        (MazeSolver.solve(0, 1, maze)));
+    }
+
+    @Test
+    void testSolveableValidPathTwoRegionReturnsSingleLocation() {
+        int[][] maze = {
+            {3}
+        };
+        assertEquals(List.of(
+            new Location(0, 0)),
+        (MazeSolver.solve(0, 0, maze)));
+    }
+
+    @Test
+    void testSolveableValidPathOneRegionThrowsIllegalArgExcept() {
+        int[][] maze = {
+            {1, 0, 1, 0},
+            {1, 0, 1, 0},
+            {1, 0, 1, 1},
+            {1, 0, 0, 3}
+        };
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.solve(0, 0, maze)
+        );
+    }
+
+    @Test
+    void testSolveableValidPathOneRegionReturnsNull() {
         int[][] maze = {
             {1, 0, 1, 0},
             {1, 0, 1, 0},
