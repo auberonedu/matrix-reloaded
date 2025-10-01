@@ -77,9 +77,9 @@ public class MazeSolver {
         }
 
         visited[row][col] = true;
-        List<int[]> neightbors = validNeighbors(row, col, maze, visited);
+        List<int[]> neighbors = validNeighbors(row, col, maze, visited);
 
-        for(int[] n : neightbors)
+        for(int[] n : neighbors)
         {
             if(reachable(n[0], n[1], maze, visited))
             {
@@ -164,7 +164,51 @@ public class MazeSolver {
         //  if yes to either throw error 
         //Once 3 is reached return list of locations (valid path)
 
+        List<Location> validPath = new ArrayList<>();
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        List<int[]> neighbors = validNeighbors(row, col, maze, visited);
+    
+        return validPathFinder(row, col, maze, validPath, neighbors, visited);
+    }
 
-        return null;
+    public static List<Location> validPathFinder(int row, int col, int[][] maze, List<Location> validPath, List<int[]> neighbors, boolean[][] visited)
+    {
+        if(!reachable(row, col, maze))
+        {
+            return null;
+        }
+        if(maze[row][col] == 1)
+        {
+            throw new IllegalArgumentException("location is a wall");
+        }
+        if(row < 0 || col < 0 || row >= maze.length || col >= maze[0].length)
+        {
+            throw new IllegalArgumentException("location is out of bounds");
+        }
+        if(maze[row][col] == 3)
+        {
+            Location treasure = new Location(row, col);
+            validPath.add(treasure);
+            return validPath;
+        }
+        for(int[] n : neighbors)
+        {
+            if(reachable(n[0], n[1], maze))
+            {
+                if(maze[row][col] == 3)
+                {
+                    Location position = new Location(n[0], n[1]);
+                    validPath.add(position);
+                    return validPath;
+                }
+                row = n[0];
+                col = n[1];
+                Location position = new Location(row, col);
+                validPath.add(position);
+                neighbors = validNeighbors(row, col, maze, visited);
+                break;
+            }
+        }
+        return validPathFinder(row, col, maze, validPath, neighbors, visited);
     }
 }
