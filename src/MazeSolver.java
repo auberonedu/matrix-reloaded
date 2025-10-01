@@ -137,8 +137,26 @@ public class MazeSolver {
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
     public static List<Location> solve(int row, int col, int[][] maze) {
-        // You will solve this with a partner
-        // Please do not begin work on this until directed to!
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length) throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
+
+        if (maze[row][col] == 1) throw new IllegalArgumentException("Location inside a wall: " + row + ", " + col);
+
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        List<Location> path = new ArrayList<>();
+        
+        return solve(row, col, maze, visited, path);
+    }
+
+    private static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited, List<Location> path) {
+        path.add(new Location(row, col));
+        visited[row][col] = true;
+
+        if (maze[row][col] == 3) return path;
+
+        for (int[] neighbor : validNeighbors(row, col, maze, visited)) {
+            if (solve(neighbor[0], neighbor[1], maze, visited, path) != null) return path;
+        }
+
         return null;
     }
 }
