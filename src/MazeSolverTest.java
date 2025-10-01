@@ -57,7 +57,35 @@ public class MazeSolverTest {
 
     // TODO 1: Write more tests for reachable
     // test for out of bounds
+    @Test
+    void testUnReachableStartingThrowsIllegalArgumentException() {
+        int[][] maze = {
+            {1, 0, 0, 1},
+            {0, 0, 1, 0},
+            {3, 0, 1, 1}
+        };
+
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.reachable(4, 6, maze)
+        );
+    }
     // no treasure
+    @Test
+    void testNoTreasureReturnsFalse() {
+        int[][] maze = {
+            {1, 0, 0, 0, 0, 1},
+            {0, 0, 1, 0, 0, 1},
+            {0, 0, 1, 1, 0, 0},
+            {1, 1, 1, 0, 0, 0}
+        };
+        assertFalse(MazeSolver.reachable(0, 3, maze));
+    }
 
     // TODO 2: Write good tests for solve
+    // out of bounds test
+    // wall test
+    // no reachable treasure
+    // one route
+    // multi route
+
 }
