@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MazeSolver {
@@ -8,6 +10,12 @@ public class MazeSolver {
             {1, 0, 0, 1, 0, 1},
             {1, 0, 0, 1, 3, 1},
         };
+
+        boolean[][] visited = new boolean[maze1.length][maze1[0].length];
+        List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
+        for(int[] neighbor : neighbors) {
+            System.out.println(Arrays.toString(neighbor));
+        }
 
         int[][] maze2 = {
             {0, 0, 0, 1, 1},
@@ -43,6 +51,35 @@ public class MazeSolver {
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
         return false;
+    }
+
+    // [{}, {}]
+    public static List<int[]> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited) {
+        int[][] moves = {
+            {-1, 0}, //UP
+            {1, 0}, //DOWN 
+            {0, 1}, //RIGHT
+            {0, -1} //LEFT
+        };
+
+        List<int[]> neighbors = new ArrayList<>();
+
+        for(int[] move :  moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+
+            if(newRow >= 0 &&
+                newRow < maze.length &&
+                newCol >= 0 &&
+                newCol < maze[0].length &&
+                maze[newRow][newCol] != 1 &&
+                !visited[newRow][newCol]) {
+                neighbors.add(new int[]{newRow, newCol});
+            }
+        }
+
+        return neighbors;
     }
 
     /**
