@@ -150,19 +150,18 @@ public class MazeSolver {
             throw new IllegalArgumentException();
         }
 
-        Set<int[]> myVisited = new HashSet<>();
-        return solve(row, col, maze, myVisited);
+        Set<Location> myVisited = new HashSet<>();
+        return solveHelper(row, col, maze, myVisited);
     }
 
-    public static List<Location> solve(int startRow, int startCol, int[][]maze, Set<int[]> visited)
+    public static List<Location> solveHelper(int startRow, int startCol, int[][]maze, Set<Location> visited)
     {
         List<Location> myList = new ArrayList<>();
 
-        for (int[] location : maze) {
-            if (reachable(startRow, startCol, maze) == true)
-            {
-                myList.add(location);
-            }
+        if (maze[startRow][startCol] == 3) {
+            List<Location> path = new ArrayList<>();
+            path.add(new Location (startRow, startCol));
+            return path;
         }
 
         if (myList.isEmpty()) return null;
