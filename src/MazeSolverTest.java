@@ -67,5 +67,17 @@ public class MazeSolverTest {
         assertThrows(IllegalArgumentException.class,
                 () -> MazeSolver.reachable(4, 2, maze));
     }
+
+    @Test
+    void testReachableStatingAtEnd() {
+        int[][] maze = {
+                { 1, 0, 0, 0, 1, 1 },
+                { 0, 0, 1, 0, 0, 0 },
+                { 1, 0, 0, 1, 0, 1 },
+                { 1, 0, 0, 1, 3, 1 },
+        };
+
+        assertTrue(MazeSolver.reachable(3, 4, maze));
+    }
     // TODO 2: Write good tests for solve
 }
