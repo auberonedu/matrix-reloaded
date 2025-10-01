@@ -59,6 +59,20 @@ public class MazeSolverTest {
     }
 
     // TODO 1: Write more tests for reachable
+    @Test
+    void testReachable_ThrowsExceptionOutOfBounds() {
+        int[][] maze = {
+            {1, 0, 0, 0, 1, 1},
+            {0, 0, 1, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 1, 3, 1},
+        };
+
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> {
+            MazeSolver.reachable(-1, 0, maze);
+        });
+        assertEquals("Out of bounds location: -1, 0", ex.getMessage());
+    }
 
     // TODO 2: Write good tests for solve
     @Test
@@ -102,13 +116,14 @@ public class MazeSolverTest {
         assertEquals(validPath.size(), solvePath.size());
     }
 
-    @Test
-    void testSolve_ThrowsExceptionInsideWall() {
+        @Test
+    void testSolve_NoValidPath() {
         int[][] maze = {
-            {1, 0, 0, 0, 1, 1},
-            {0, 0, 1, 0, 0, 0},
-            {1, 0, 0, 1, 0, 1},
-            {1, 0, 0, 1, 3, 1},
+            {0, 0, 0, 1, 1},
+            {0, 1, 1, 0, 0},
+            {0, 0, 1, 0, 1},
+            {0, 0, 1, 3, 1},
+            {1, 1, 1, 1, 1}
         };
 
         List<Location> validPath = new ArrayList<>();
@@ -121,6 +136,20 @@ public class MazeSolverTest {
         validPath.add(new Location(1, 4));
         validPath.add(new Location(2, 4));
         validPath.add(new Location(3, 4));
+
+        List<Location> solvePath = MazeSolver.solve(1, 0, maze);
+
+        assertEquals(null, solvePath);
+    }
+
+    @Test
+    void testSolve_ThrowsExceptionInsideWall() {
+        int[][] maze = {
+            {1, 0, 0, 0, 1, 1},
+            {0, 0, 1, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 1, 3, 1},
+        };
 
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
             MazeSolver.solve(0, 0, maze);
