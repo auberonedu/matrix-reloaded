@@ -14,6 +14,11 @@ public class MazeSolver {
             {1, 0, 0, 1, 0, 1},
             {1, 0, 0, 1, 3, 1},
         };
+        List<Location> path = solve(0, 1, maze1);
+        for(Location l : path)
+        {
+            System.out.println(l);
+        }
 
         // boolean[][] visited = new boolean[maze1.length][maze1[0].length];
         // List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
@@ -163,20 +168,6 @@ public class MazeSolver {
         //check if position is a wall or out of bounds
         //  if yes to either throw error 
         //Once 3 is reached return list of locations (valid path)
-
-        List<Location> validPath = new ArrayList<>();
-        boolean[][] visited = new boolean[maze.length][maze[0].length];
-        List<int[]> neighbors = validNeighbors(row, col, maze, visited);
-    
-        return validPathFinder(row, col, maze, validPath, neighbors, visited);
-    }
-
-    public static List<Location> validPathFinder(int row, int col, int[][] maze, List<Location> validPath, List<int[]> neighbors, boolean[][] visited)
-    {
-        if(!reachable(row, col, maze))
-        {
-            return null;
-        }
         if(maze[row][col] == 1)
         {
             throw new IllegalArgumentException("location is a wall");
@@ -185,6 +176,21 @@ public class MazeSolver {
         {
             throw new IllegalArgumentException("location is out of bounds");
         }
+        if(!reachable(row, col, maze))
+        {
+            return null;
+        }
+
+        List<Location> validPath = new ArrayList<>();
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        List<int[]> neighbors = validNeighbors(row, col, maze, visited);
+    
+        //maybe use a boolean method so that if valid path is not found retrun null by default?
+        return validPathFinder(row, col, maze, validPath, neighbors, visited);
+    }
+
+    public static List<Location> validPathFinder(int row, int col, int[][] maze, List<Location> validPath, List<int[]> neighbors, boolean[][] visited)
+    {
         if(maze[row][col] == 3)
         {
             Location treasure = new Location(row, col);
@@ -195,7 +201,7 @@ public class MazeSolver {
         {
             if(reachable(n[0], n[1], maze))
             {
-                if(maze[row][col] == 3)
+                if(maze[n[0]][n[1]] == 3)
                 {
                     Location position = new Location(n[0], n[1]);
                     validPath.add(position);
@@ -205,8 +211,7 @@ public class MazeSolver {
                 col = n[1];
                 Location position = new Location(row, col);
                 validPath.add(position);
-                neighbors = validNeighbors(row, col, maze, visited);
-                break;
+                // neighbors = validNeighbors(row, col, maze, visited);
             }
         }
         return validPathFinder(row, col, maze, validPath, neighbors, visited);
