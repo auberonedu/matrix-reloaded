@@ -130,6 +130,44 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
-        return null;
+        if(!reachable(row, col, maze)){
+            return null;
+        }
+        List<Location> path = new ArrayList<Location>();
+        return solve(row, col, maze, path);
+    }
+    public static List<Location> solve(int row, int col, int[][] maze, List<Location> path) {
+        if(maze[row][col] == 3) {
+            path.add(new Location(row, col));
+            return path;
+        };
+        path.add(new Location(row, col));
+        List<Location> moves = moveOptions(row, col, maze, path);
+        for(Location move : moves) {
+            path = solve(move.row(), move.col(), maze, path);
+        }
+        path.removeLast();
+        return path;
+    }
+    public static List<Location> moveOptions(int startRow, int startCol, int[][] maze, List<Location> path) {
+        int[][] moves = {
+            {-1, 0},
+            {1, 0},
+            {0, 1},
+            {0, -1}
+        };
+
+        List<Location> neighbors = new ArrayList<>();
+
+        for(int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+            if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length && maze[newRow][newCol] != 1 && path.contains(new Location(newRow, newCol))){
+                neighbors.add(new Location(newRow, newCol));
+            }
+        }
+
+        return neighbors;
     }
 }
