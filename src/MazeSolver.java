@@ -183,17 +183,17 @@ public class MazeSolver {
 
         List<Location> validPath = new ArrayList<>();
         boolean[][] visited = new boolean[maze.length][maze[0].length];
-        List<int[]> neighbors = validNeighbors(row, col, maze, visited);
     
         //maybe use a boolean method so that if valid path is not found retrun null by default?
         
-        if(validPathFinder(row, col, maze, validPath, neighbors, visited))
+        if(validPathFinder(row, col, maze, validPath, visited))
         {
             return validPath;
         }
+        return null;
     }
 
-    public static boolean validPathFinder(int row, int col, int[][] maze, List<Location> validPath, List<int[]> neighbors, boolean[][] visited)
+    public static boolean validPathFinder(int row, int col, int[][] maze, List<Location> validPath, boolean[][] visited)
     {
         //checking out of bounds and if valid position
         if(row < 0 || col < 0 || row >= maze.length || col >= maze[0].length || maze[row][col] == 1 || visited[row][col])
@@ -210,24 +210,15 @@ public class MazeSolver {
             return true;
         }
 
-
+        List<int[]> neighbors = validNeighbors(row, col, maze, visited);
         for(int[] n : neighbors)
         {
-            if(reachable(n[0], n[1], maze))
+            if(validPathFinder(n[0], n[1], maze, validPath, visited))
             {
-                if(maze[n[0]][n[1]] == 3)
-                {
-                    position = new Location(n[0], n[1]);
-                    validPath.add(position);
-                    return validPath;
-                }
-                row = n[0];
-                col = n[1];
-                position = new Location(row, col);
-                validPath.add(position);
-                // neighbors = validNeighbors(row, col, maze, visited);
+                return true;
             }
         }
-        return validPathFinder(row, col, maze, validPath, neighbors, visited);
+        validPath.remove(validPath.size() - 1);
+        return false;
     }
 }
