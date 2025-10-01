@@ -24,15 +24,32 @@ public class MazeSolver {
         // for(int[] neighbor : neighbors) {
         //     System.out.println(Arrays.toString(neighbor));
         // }
-        List<Location> path = solve(0, 1, maze1);
-        for(Location point : path) {
-            System.out.println(point.toString());
-        };
+        // List<Location> path = solve(0, 1, maze1);
+        // for(Location point : path) {
+        //     System.out.println(point.toString());
+        // };
 
         // Location myLocation = new Location(4, 7);
         // Location location2 = new Location(3, 8);
         // myLocation = new Location(3, 8);
         // System.out.println(myLocation.equals(location2));
+
+        int[][] maze = {
+            {0, 1, 0, 0, 3},
+            {0, 1, 1, 0, 1},
+            {0, 0, 1, 0, 1},
+            {0, 1, 0, 0, 1},
+            {0, 0, 0, 1, 1}
+        };
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        boolean finder = false;
+        if(path.contains(new Location(0, 0))) {
+            finder = true;
+        }
+        for (Location location : path) {
+            System.out.println(location);
+        }
+        System.out.println(finder);
     }
 
     /**
@@ -137,21 +154,22 @@ public class MazeSolver {
         if(!reachable(row, col, maze)){
             return null;
         }
-        List<Location> path = new ArrayList<Location>();
         List<Location> seen = new ArrayList<Location>();
-        return solve(row, col, maze, path, seen);
+        return solve(row, col, maze, seen);
     }
-    public static List<Location> solve(int row, int col, int[][] maze, List<Location> path, List<Location> seen) {
+    public static List<Location> solve(int row, int col, int[][] maze, List<Location> seen) {
         if(maze[row][col] == 3) {
-            path.add(new Location(row, col));
-            return path;
+            List<Location> endPath = new ArrayList<Location>();
+            endPath.add(new Location(row, col));
+            return endPath;
         }
         seen.add(new Location(row, col));
         List<Location> moves = moveOptions(row, col, maze, seen);
         for(Location move : moves) {
-            if(solve(move.row(), move.col(), maze, path, seen) != null){
-                path.addFirst(move);
-                return path;
+            List<Location> result = solve(move.row(), move.col(), maze, seen);
+            if(result != null){
+                result.addFirst(new Location(row, col));
+                return result;
             } 
         }
         
