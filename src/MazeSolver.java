@@ -153,6 +153,18 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
+
+        // check if 3 is reachable from given row col
+            //return null if false
+        //else if true
+        //  use valid neighborhs to find a valid path
+        //  keep track of valid moves/ position using a list of locations
+        //  add to list if a position is still able to reach the 3
+        //check if position is a wall or out of bounds
+        //  if yes to either throw error 
+        //Once 3 is reached return list of locations (valid path)
+
+
         return null;
     }
 }
