@@ -134,12 +134,29 @@ public class MazeSolverTest {
         };
         List<Location> path = MazeSolver.solve(0, 0, maze);
         boolean finder = false;
-        if(path.contains(new Location(0, 0))) {
+        if(path.contains(new Location(0, 0)) && path.contains(new Location(0, 4)) && path.contains(new Location(4, 2))) {
             finder = true;
         }
         
         assertTrue(finder);
     }
     // multi route
+    @Test
+    void testMultiPathForSolve() {
+        int[][] maze = {
+            {0, 0, 0, 1, 0, 0, 1},
+            {0, 1, 0, 0, 0, 1, 1},
+            {0, 0, 0, 3, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1, 0},
+            {0, 0, 0, 0, 0, 1, 0}
+        };
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        boolean finder = false;
+        if(path.contains(new Location(0, 0)) && path.contains(new Location(2, 3)) && 
+        (path.contains(new Location(2, 2)) ||path.contains(new Location(1, 3)) || path.contains(new Location(2, 4)))) {
+            finder = true;
+        }
+        assertTrue(finder);
+    }
 
 }
