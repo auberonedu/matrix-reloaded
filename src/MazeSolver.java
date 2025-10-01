@@ -153,7 +153,7 @@ public class MazeSolver {
 
         boolean[][] visited = new boolean[maze.length][maze[0].length];
 
-        return null;
+        return solve(row, col, maze, visited);
     }
 
     private static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited) {
@@ -166,7 +166,15 @@ public class MazeSolver {
 
         visited[row][col] = true;
         List<Location> neighbors = validLocations(row, col, maze, visited);
+        for (Location location : neighbors) {
+            List<Location> returnedPath = solve(location.row(), location.col(), maze, visited);
+            if (returnedPath != null) {
+                path.addAll(returnedPath);
+                return path;
+            }
+        }
 
+        return null;
     }
 
     public static List<Location> validLocations(int startRow, int startCol, int[][] maze, boolean[][] visited) {
