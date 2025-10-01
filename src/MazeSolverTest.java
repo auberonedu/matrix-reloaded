@@ -79,5 +79,6 @@ public class MazeSolverTest {
 
         assertTrue(MazeSolver.reachable(3, 4, maze));
     }
+
     // TODO 2: Write good tests for solve
 }

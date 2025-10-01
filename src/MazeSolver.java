@@ -143,6 +143,55 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
+        if (maze[row][col] == 1) {
+            throw new IllegalArgumentException("Location is in wall: " + row + ", " + col);
+        }
+
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[row].length) {
+            throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
+        }
+
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+
         return null;
+    }
+
+    private static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited) {
+        List<Location> path = new ArrayList<>();
+
+        if (maze[row][col] == 3) {
+            path.add(new Location(row, col));
+            return path;
+        }
+
+        visited[row][col] = true;
+        List<Location> neighbors = validLocations(row, col, maze, visited);
+
+    }
+
+    public static List<Location> validLocations(int startRow, int startCol, int[][] maze, boolean[][] visited) {
+        List<Location> moves = new ArrayList<>();
+        moves.add(new Location(-1, 0));
+        moves.add(new Location(1, 0));
+        moves.add(new Location(0, -1));
+        moves.add(new Location(0, 1));
+
+        List<Location> neighbors = new ArrayList<>();
+
+        for (Location move : moves) {
+            int newRow = startRow + move.row();
+            int newCol = startCol + move.col();
+
+            if (newRow >= 0 &&
+                    newRow < maze.length &&
+                    newCol >= 0 &&
+                    newCol < maze[0].length &&
+                    maze[newRow][newCol] != 1 &&
+                    !visited[newRow][newCol]) {
+                neighbors.add(new Location(newRow, newCol));
+            }
+        }
+
+        return neighbors;
     }
 }
