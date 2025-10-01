@@ -3,6 +3,8 @@ import java.util.List;
 
 public class MazeSolver {
     public static void main(String[] args) {
+        Location myLocation = new Location(4,7);
+        System.out.println(myLocation.row());
         int[][] maze1 = {
             {1, 0, 0, 0, 1, 1},
             {0, 0, 1, 0, 0, 0},
@@ -42,16 +44,17 @@ public class MazeSolver {
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
     public static boolean reachable(int row, int col, int[][] maze) {
-        if (maze[row][col]==1||row>=0||row<maze.length||col>=0||col<maze[0].length) throw new IllegalArgumentException();
+        if (maze[row][col]==1||row<0||row>=maze.length||col<0||col>=maze[0].length) throw new IllegalArgumentException();
         boolean[][] visited = new boolean[maze.length][maze[0].length];
+        return reachable(row, col, maze, visited);
+    }
+
+    public static boolean reachable(int row, int col, int[][] maze, boolean[][] visited) {
+        if (maze[row][col] == 3) return true;
+        visited[row][col] = true;
         List<int[]> neighbours = validNeighbours(row, col, maze, visited);
         for (int[] moves : neighbours) {
-            if (visited[moves[0]][moves[1]]==false) {
-                visited[moves[0]][moves[1]] = true;
-                if (maze[moves[0]][moves[1]]==3) {
-                    return true;
-                }
-            }
+            if (reachable(moves[0], moves[1], maze, visited)) return true;
         }
         return false;
     }
@@ -103,8 +106,21 @@ public class MazeSolver {
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
     public static List<Location> solve(int row, int col, int[][] maze) {
-        // You will solve this with a partner
-        // Please do not begin work on this until directed to!
-        return null;
+        if (maze[row][col]==1||row<0||row>=maze.length||col<0||col>=maze[0].length) throw new IllegalArgumentException();
+        List<Location> path = new ArrayList<>();
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        path.add(new Location(row, col));
+        return solve(row, col, maze, visited, path);
+    }
+    public static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited, List<Location> path) {
+        visited[row][col] = true;
+        List<int[]> neighbours = validNeighbours(row, col, maze, visited);
+        for (int[] moves : neighbours) {
+            path.add(new Location(moves[0],moves[1]));
+            if (maze[row][col]==3) return path;
+            solve(moves[0], moves[1], maze, visited, path);
+        }
+        System.out.println(path.toString());
+        return path;
     }
 }
