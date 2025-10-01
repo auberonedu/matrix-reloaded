@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MazeSolver {
@@ -16,6 +18,38 @@ public class MazeSolver {
             {0, 0, 1, 3, 1},
             {1, 1, 1, 1, 1}
         };
+
+        // boolean[][] visited = new boolean[maze1.length][maze1[0].length];
+        // List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
+        // for(int[] neighbor : neighbors) {
+        //     System.out.println(Arrays.toString(neighbor));
+        // }
+        // List<Location> path = solve(0, 1, maze1);
+        // for(Location point : path) {
+        //     System.out.println(point.toString());
+        // };
+
+        // Location myLocation = new Location(4, 7);
+        // Location location2 = new Location(3, 8);
+        // myLocation = new Location(3, 8);
+        // System.out.println(myLocation.equals(location2));
+
+        int[][] maze = {
+            {0, 1, 0, 0, 3},
+            {0, 1, 1, 0, 1},
+            {0, 0, 1, 0, 1},
+            {0, 1, 0, 0, 1},
+            {0, 0, 0, 1, 1}
+        };
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        boolean finder = false;
+        if(path.contains(new Location(0, 0))) {
+            finder = true;
+        }
+        for (Location location : path) {
+            System.out.println(location);
+        }
+        System.out.println(finder);
     }
 
     /**
@@ -42,7 +76,48 @@ public class MazeSolver {
      */
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length) {
+            throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
+        }
+        if(maze[row][col] == 1) {
+            throw new IllegalArgumentException("Location is in wall: " + row +", " + col);
+        }
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        return reachable(row, col, maze, visited);
+    }
+    private static boolean reachable(int row, int col, int[][] maze, boolean[][] visited){
+        if(maze[row][col] == 3) {
+            return true;
+        }
+        visited[row][col] = true;
+        List<Location> neighbors = validNeighbors(row, col, maze, visited);
+        for(Location neighbor : neighbors) {
+            if(reachable(neighbor.row(), neighbor.col(), maze, visited)) {
+                return true;
+            }
+        }
         return false;
+    }
+    public static List<Location> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited){
+        int[][] moves = {
+            {-1, 0},
+            {1, 0},
+            {0, 1},
+            {0, -1}
+        };
+
+        List<Location> neighbors = new ArrayList<>();
+
+        for(int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+            if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length && maze[newRow][newCol] != 1 && !visited[newRow][newCol]){
+                neighbors.add(new Location(newRow, newCol));
+            }
+        }
+
+        return neighbors;
     }
 
     /**
@@ -76,6 +151,58 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
+        if(!reachable(row, col, maze)){
+            return null;
+        }
+        List<Location> seen = new ArrayList<Location>();
+        return solve(row, col, maze, seen);
+    }
+    // recurse for solve
+    // searches from start to end
+    // records from end to start, but puts the latest on in front
+    public static List<Location> solve(int row, int col, int[][] maze, List<Location> seen) {
+        // base case not covered in reachable
+        if(maze[row][col] == 3) {
+            // makes the list to be passed down
+            List<Location> endPath = new ArrayList<Location>();
+            endPath.add(new Location(row, col));
+            return endPath;
+        }
+        seen.add(new Location(row, col));
+        List<Location> moves = moveOptions(row, col, maze, seen);
+        for(Location move : moves) {
+            // saves started path
+            List<Location> result = solve(move.row(), move.col(), maze, seen);
+            // if path is found it adds to the front
+            if(result != null){
+                // adds parent to start of list
+                result.addFirst(new Location(row, col));
+                return result;
+            } 
+        }
+        // returns null if path is not found
         return null;
+    }
+    // get moves
+    public static List<Location> moveOptions(int startRow, int startCol, int[][] maze, List<Location> path) {
+        int[][] moves = {
+            {-1, 0},
+            {1, 0},
+            {0, 1},
+            {0, -1}
+        };
+
+        List<Location> neighbors = new ArrayList<>();
+
+        for(int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+
+            if(newRow >= 0 && newRow < maze.length && newCol >= 0 && newCol < maze[0].length && maze[newRow][newCol] != 1 && !path.contains(new Location(newRow, newCol))){
+                neighbors.add(new Location(newRow, newCol));
+            }
+        }
+
+        return neighbors;
     }
 }

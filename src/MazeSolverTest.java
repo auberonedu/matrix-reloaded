@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 public class MazeSolverTest {
@@ -56,6 +58,105 @@ public class MazeSolverTest {
     }
 
     // TODO 1: Write more tests for reachable
+    // test for out of bounds
+    @Test
+    void testUnReachableStartingThrowsIllegalArgumentException() {
+        int[][] maze = {
+            {1, 0, 0, 1},
+            {0, 0, 1, 0},
+            {3, 0, 1, 1}
+        };
+
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.reachable(4, 6, maze)
+        );
+    }
+    // no treasure
+    @Test
+    void testNoTreasureReturnsFalse() {
+        int[][] maze = {
+            {1, 0, 0, 0, 0, 1},
+            {0, 0, 1, 0, 0, 1},
+            {0, 0, 1, 1, 0, 0},
+            {1, 1, 1, 0, 0, 0}
+        };
+        assertFalse(MazeSolver.reachable(0, 3, maze));
+    }
 
     // TODO 2: Write good tests for solve
+    // out of bounds test
+    @Test
+    void testOutOfBoundsForSolve() {
+        int[][] maze = {
+            {0, 0, 0, 0, 1, 0, 1},
+            {0, 0, 0, 0, 1, 1, 1},
+            {0, 0, 0, 0, 0, 1, 0},
+            {1, 0, 0, 1, 1, 1, 0},
+            {1, 0, 0, 0, 0, 0, 3}
+        };
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.solve(5, 6, maze)
+        );
+    }
+    // wall test
+    @Test
+    void testInWallForSolve() {
+        int[][] maze = {
+            {1, 0, 0, 1},
+            {0, 0, 1, 1},
+            {0, 1, 1, 0},
+            {0, 0, 0, 3},
+        };
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.solve(2, 1, maze)
+        );
+    }
+    // no reachable treasure
+    @Test
+    void testNoReachableTreasureForSolve() {
+        int[][] maze = {
+            {1, 0, 0, 1},
+            {0, 0, 1, 0},
+            {0, 1, 0, 3}
+        };
+        List<Location> path = MazeSolver.solve(1, 0, maze);
+        assertEquals(null, path);
+    }
+    // one route
+    @Test
+    void testOnePathForSolve() {
+        int[][] maze = {
+            {0, 1, 0, 0, 3},
+            {0, 1, 1, 0, 1},
+            {0, 0, 1, 0, 1},
+            {0, 1, 0, 0, 1},
+            {0, 0, 0, 1, 1}
+        };
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        boolean finder = false;
+        if(path.contains(new Location(0, 0)) && path.contains(new Location(0, 4)) && path.contains(new Location(4, 2))) {
+            finder = true;
+        }
+        
+        assertTrue(finder);
+    }
+    // multi route
+    @Test
+    void testMultiPathForSolve() {
+        int[][] maze = {
+            {0, 0, 0, 1, 0, 0, 1},
+            {0, 1, 0, 0, 0, 1, 1},
+            {0, 0, 0, 3, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1, 0},
+            {0, 0, 0, 0, 0, 1, 0}
+        };
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        boolean finder = false;
+        if(path.contains(new Location(0, 0)) && path.contains(new Location(2, 3)) && 
+        (path.contains(new Location(2, 2)) ||path.contains(new Location(1, 3)) || path.contains(new Location(2, 4)))) {
+            finder = true;
+        }
+        assertTrue(finder);
+    }
+
 }
