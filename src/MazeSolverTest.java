@@ -55,14 +55,34 @@ public class MazeSolverTest {
         );
     }
 
-    // TODO 1: Write more tests for reachable
+    // TODO 1: Write more tests for 
+    @Test
+    void testMultipleTreasuresFound() {
+        int[][] maze = {
+            {0, 3, 1},
+            {0, 1, 0},
+            {0, 0, 3}
+        };
+
+        assertTrue(MazeSolver.reachable(0, 0, maze));
+    }
+
 
     // TODO 2: Write good tests for solve
 
     @Test
-    void testStartsOnTreasure() {
+    void testReturnsNull(){
         int[][] maze = {
-            {3}
+            {0, 1, 3}
         };
+        assertNull(MazeSolver.solve(0, 0, maze));
+    }
+
+    @Test
+    void testInaccessibleTreasure(){
+        int[][] maze = {
+            {0, 1, 3}
+        };
+        assertNull(MazeSolver.solve(0, 0, maze));
     }
 }
