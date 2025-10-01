@@ -186,30 +186,44 @@ public class MazeSolver {
         List<int[]> neighbors = validNeighbors(row, col, maze, visited);
     
         //maybe use a boolean method so that if valid path is not found retrun null by default?
-        return validPathFinder(row, col, maze, validPath, neighbors, visited);
-    }
-
-    public static List<Location> validPathFinder(int row, int col, int[][] maze, List<Location> validPath, List<int[]> neighbors, boolean[][] visited)
-    {
-        if(maze[row][col] == 3)
+        
+        if(validPathFinder(row, col, maze, validPath, neighbors, visited))
         {
-            Location treasure = new Location(row, col);
-            validPath.add(treasure);
             return validPath;
         }
+    }
+
+    public static boolean validPathFinder(int row, int col, int[][] maze, List<Location> validPath, List<int[]> neighbors, boolean[][] visited)
+    {
+        //checking out of bounds and if valid position
+        if(row < 0 || col < 0 || row >= maze.length || col >= maze[0].length || maze[row][col] == 1 || visited[row][col])
+        {
+            return false;
+        }
+
+        visited[row][col] = true;
+        Location position = new Location(row, col);
+        validPath.add(position);
+
+        if(maze[row][col] == 3)
+        {
+            return true;
+        }
+
+
         for(int[] n : neighbors)
         {
             if(reachable(n[0], n[1], maze))
             {
                 if(maze[n[0]][n[1]] == 3)
                 {
-                    Location position = new Location(n[0], n[1]);
+                    position = new Location(n[0], n[1]);
                     validPath.add(position);
                     return validPath;
                 }
                 row = n[0];
                 col = n[1];
-                Location position = new Location(row, col);
+                position = new Location(row, col);
                 validPath.add(position);
                 // neighbors = validNeighbors(row, col, maze, visited);
             }
