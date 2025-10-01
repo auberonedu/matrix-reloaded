@@ -59,8 +59,6 @@ public class MazeSolverTest {
 
     // TODO 1: Write more tests for reachable
 
-    // TODO 2: Write good tests for solve
-
     @Test
     void testReachableValidPathOneRegionReturnsList() {
         int[][] maze = {
@@ -77,5 +75,16 @@ public class MazeSolverTest {
             new Location(3, 2),
             new Location(3, 3)),
         (MazeSolver.solve(0, 1, maze)));
+    }
+
+    @Test
+    void testReachableValidPathOneRegionReturnsNull() {
+        int[][] maze = {
+            {1, 0, 1, 0},
+            {1, 0, 1, 0},
+            {1, 1, 1, 1},
+            {1, 0, 0, 3}
+        };
+        assertEquals(null,(MazeSolver.solve(0, 1, maze)));
     }
 }

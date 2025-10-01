@@ -109,18 +109,17 @@ public class MazeSolver {
         if (maze[row][col]==1||row<0||row>=maze.length||col<0||col>=maze[0].length) throw new IllegalArgumentException();
         List<Location> path = new ArrayList<>();
         boolean[][] visited = new boolean[maze.length][maze[0].length];
-        path.add(new Location(row, col));
         return solve(row, col, maze, visited, path);
     }
     public static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited, List<Location> path) {
+        path.add(new Location(row, col));
+        if (maze[row][col]==3) return path;
         visited[row][col] = true;
         List<int[]> neighbours = validNeighbours(row, col, maze, visited);
         for (int[] moves : neighbours) {
-            path.add(new Location(moves[0],moves[1]));
-            if (maze[row][col]==3) return path;
-            solve(moves[0], moves[1], maze, visited, path);
+            return solve(moves[0], moves[1], maze, visited, path);
         }
         System.out.println(path.toString());
-        return path;
+        return null;
     }
 }
