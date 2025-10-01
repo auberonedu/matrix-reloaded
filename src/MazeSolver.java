@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class MazeSolver {
     public static void main(String[] args) {
@@ -116,9 +118,28 @@ public class MazeSolver {
      * @return a list of locations indiciating any valid path, or null if there is no valid path.
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
-    // public static List<Location> solve(int row, int col, int[][] maze) {
-    //     // You will solve this with a partner
-    //     // Please do not begin work on this until directed to!
-    //     return null;
-    // }
+    public static List<Location> solve(int row, int col, int[][] maze) {
+        List<Location> list = new ArrayList<>();
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{row, col});
+        visited[row][col] = true;
+    
+        while (!queue.isEmpty()) {
+            int[] pos = queue.poll();
+            int curRow = pos[0];
+            int curCol = pos[1];
+                
+            
+                for (int[] neighbor : validNeighbors(row, col, maze, visited)) {
+                    list.add(curRow, true);
+                    visited[neighbor[0]][neighbor[1]] = true;
+                    queue.add(neighbor);
+                }
+            
+    
+        }
+        return null;
+
+    }
 }
