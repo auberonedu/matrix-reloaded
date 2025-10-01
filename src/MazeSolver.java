@@ -1,10 +1,16 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MazeSolver {
     public static void main(String[] args) {
-        // startRow 0
+        Location myLocation = new Location(4, 7);                   // STEP 20..
+        Location location2 = new Location(myLocation.row() + 1, myLocation.col());
+        //myLocation = new Location(3, 8);                            // q: i thought it was immutable?
+        System.out.println(myLocation.equals(location2));
+    /*    // startRow 0
         // startCol 1
         int[][] maze1 = {
             {1, 0, 0, 0, 1, 1},
@@ -28,7 +34,7 @@ public class MazeSolver {
             {0, 0, 1, 0, 1},
             {0, 0, 1, 3, 1},
             {1, 1, 1, 1, 1}
-        };
+        };*/
     }
 
     /**
@@ -76,7 +82,7 @@ public class MazeSolver {
         List<int[]> neighbors = validNeighbors(row, col, maze, visited);                                          // STEP 18
 
         for (int[] neighbor : neighbors) {
-            if (reachable(neighbor[0], neighbor[1], maze, visited)) {                                             // STEP 19
+            if (reachable(neighbor[0], neighbor[1], maze, visited)) {                                             // STEP 19 - 0=row, 1=column
                 return true;
             }
         }
@@ -137,11 +143,30 @@ public class MazeSolver {
      * @param col the starting column of the player
      * @param maze a 2d array of ints representing the maze
      * @return a list of locations indiciating any valid path, or null if there is no valid path.
-     * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
+     * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall. ✔️
      */
     public static List<Location> solve(int row, int col, int[][] maze) {
-        // You will solve this with a partner
-        // Please do not begin work on this until directed to!
-        return null;
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length || maze[row][col] == 1) {
+            throw new IllegalArgumentException();
+        }
+
+        Set<int[]> myVisited = new HashSet<>();
+        return solve(row, col, maze, myVisited);
+    }
+
+    public static List<Location> solve(int startRow, int startCol, int[][]maze, Set<int[]> visited)
+    {
+        List<Location> myList = new ArrayList<>();
+
+        for (int[] location : maze) {
+            if (reachable(startRow, startCol, maze) == true)
+            {
+                myList.add(location);
+            }
+        }
+
+        if (myList.isEmpty()) return null;
+        
+        return myList;
     }
 }
