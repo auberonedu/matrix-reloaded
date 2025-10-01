@@ -132,8 +132,57 @@ public class MazeSolver {
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
     public static List<Location> solve(int row, int col, int[][] maze) {
-        // You will solve this with a partner
-        // Please do not begin work on this until directed to!
+        if(row  < 0 || col < 0 || row >= maze.length || col >= maze[0].length) throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
+        if(maze[row][col] == 1) throw new IllegalArgumentException("Location is a wall: " + row + ", " + col);
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        List<Location> path = new ArrayList<>();
+        Location start = new Location(row, col);
+        if (validPath(start, maze, visited, path)) return path;
         return null;
+    }
+
+    private static boolean validPath(Location current, int[][] maze, boolean[][]visited, List<Location>path) {
+        if (maze[current.row()][current.col()] == 3) {
+            path.add(current); 
+            return true;
+        }
+        visited[current.row()][current.col()] = true;
+
+        List<Location> neighbors = validNeighbors(current, maze, visited);
+
+        for (Location neighbor : neighbors) {
+            if (validPath(neighbor, maze, visited, path)) {
+                path.add(0, current);
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public static List<Location> validNeighbors(Location start, int[][] maze, boolean[][] visited) {
+        int[][] moves = {
+            {-1, 0}, // up
+            {1, 0},  // down
+            {0, 1},  // right
+            {0, -1}  // left
+        };
+
+        List<Location> neighbors = new ArrayList<>();
+        int startRow = start.row();
+        int startCol = start.col();
+
+        for (int[] move : moves) {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+            if (newRow >= 0 &&
+                newRow < maze.length &&
+                newCol >= 0 &&
+                newCol < maze[0].length &&
+                maze[newRow][newCol] != 1 &&
+                !visited[newRow][newCol]) {
+                neighbors.add(new Location(newRow, newCol));
+            }
+        }
+        return neighbors;
     }
 }
