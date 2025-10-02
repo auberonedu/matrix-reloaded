@@ -72,33 +72,6 @@ public class MazeSolverTest {
         );
     }
 
-    // TODO 2: Write good tests for solve
-    // test allow for ANY valid path, not too strict w/ tests (idea: make array of working paths then return index 0 one)
-        @Test
-    void testSolveValidPathOneRegionReturnsTrue() {
-        int[][] maze = {
-            {1, 0, 0, 0, 1, 1},
-            {0, 0, 1, 0, 0, 0},
-            {1, 0, 0, 1, 0, 1},
-            {1, 0, 0, 1, 3, 1},
-        };
-
-        //assertEquals(2, MazeSolver.solve(3, 2, maze));
-    }
-
-    @Test
-    void testSolveValidPathTwoRegionReturnsTrue() {
-        int[][] maze = {
-            {0, 0, 0, 1, 1},
-            {0, 1, 1, 0, 0},
-            {0, 0, 1, 0, 1},
-            {0, 0, 1, 3, 1},
-            {1, 1, 1, 1, 1}
-        };
-
-        //assertTrue(MazeSolver.solve(1, 3, maze));
-    }
-
     @Test
     void testSolveNoValidPathReturnsNull() {
         int[][] maze = {
@@ -137,6 +110,21 @@ public class MazeSolverTest {
         List<Location> path = MazeSolver.solve(1, 1, maze);
 
         assertEquals(new Location(1, 1), path.get(0));
+    }
+
+    @Test
+    void testSolveMultipleValidPaths() {
+        int[][] maze = {
+            {1, 0, 0, 0, 1, 1},
+            {0, 0, 1, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 0, 3, 1},
+        };
+
+        List<Location> path = MazeSolver.solve(0, 1, maze);
+
+        Location last = path.get(path.size()-1);
+        assertEquals(3, maze[last.row()][last.col()]);
     }
 
     // test for out of bounds (for both)!
