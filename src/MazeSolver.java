@@ -131,13 +131,12 @@ public class MazeSolver {
             int curCol = pos[1];
                 
             
-                for (int[] neighbor : validNeighbors(row, col, maze, visited)) {
-                    list.add(curRow, true);
+                for (int[] neighbor : validNeighbors(curRow, curCol, maze, visited)) {
+                    list.add(curRow, curCol);
                     visited[neighbor[0]][neighbor[1]] = true;
                     queue.add(neighbor);
                 }
-            
-    
+                return list;
         }
         return null;
 
