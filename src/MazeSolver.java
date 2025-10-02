@@ -10,12 +10,28 @@ public class MazeSolver {
         Location myLocation2 = new Location(myLocation.row()+1,myLocation.col());
         System.out.println(myLocation.equals(myLocation2));
 
-        // int[][] maze1 = {
-        //     {1, 0, 0, 0, 1, 1},
-        //     {0, 0, 1, 0, 0, 0},
-        //     {1, 0, 0, 1, 0, 1},
-        //     {1, 0, 0, 1, 3, 1},
-        // };
+        int[][] maze1 = {
+            {1, 0, 0, 0, 1, 1},
+            {0, 0, 1, 0, 0, 0},
+            {1, 0, 0, 1, 0, 1},
+            {1, 0, 0, 1, 3, 1},
+        };
+
+        
+        try {
+            List<Location> path = solve(0, 1, maze1);
+
+            if (path == null) {
+                System.out.println("No path found.");
+            } else {
+                System.out.println("Path to treasure:");
+                for (Location loc : path) {
+                    System.out.println(loc);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
         // boolean[][] visited = new boolean[maze1.length][maze1[0].length];
         // List<int[]> neighbors = validNeighbors(0, 1, maze1, visited);
@@ -142,6 +158,40 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
+
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length) {
+            throw new IllegalArgumentException("Out of bounds location: " + row + "," + col);
+        }
+        if (maze[row][col] == 1) {
+            throw new IllegalArgumentException("Location is in wall: " + row + "," + col);
+        }
+
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+        List<Location> path = new ArrayList<>();
+
+        if (dfs(row, col, maze, visited, path)) {
+            return path; // found a path including start and treasure
+        }
         return null;
+    }
+
+    private static boolean dfs(int row, int col, int[][] maze, boolean[][] visited, List<Location> path) {
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length) return false;
+        if (maze[row][col] == 1 || visited[row][col]) return false;
+
+        visited[row][col] = true;
+        path.add(new Location(row, col));
+
+        if (maze[row][col] == 3) return true;
+
+        int[][] moves = { {-1,0}, {1,0}, {0,-1}, {0,1} };
+        for (int[] move : moves) {
+            if (dfs(row + move[0], col + move[1], maze, visited, path)) {
+                return true;
+            }
+        }
+
+        path.remove(path.size() - 1);
+        return false;
     }
 }
