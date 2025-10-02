@@ -156,16 +156,59 @@ public class MazeSolver {
 
     public static List<Location> solveHelper(int startRow, int startCol, int[][]maze, Set<Location> visited)
     {
-        List<Location> myList = new ArrayList<>();
+        // base case: visited
+        Location current = new Location(startRow, startCol);
+        visited.add(current);
 
+        // base case: if start is treasure
         if (maze[startRow][startCol] == 3) {
             List<Location> path = new ArrayList<>();
             path.add(new Location (startRow, startCol));
             return path;
         }
 
-        if (myList.isEmpty()) return null;
+        for (Location neighbor : validNeighborsForSolve(startRow, startCol, maze, visited)) {
+            List<Location> pathFromNeighbor = solveHelper(neighbor.row(), neighbor.col(), maze, visited);
         
-        return myList;
+            if (pathFromNeighbor != null)
+            {
+                pathFromNeighbor.add(0, current);
+                return pathFromNeighbor;
+            }
+        }
+        
+        return null;
+    }
+
+    public static List<Location> validNeighborsForSolve(int startRow, int startCol, int[][] maze, Set<Location> visited)
+    {
+        int[][] moves = {
+            {-1, 0},
+            {1, 0},
+            {0, 1},
+            {0, -1}
+        };
+
+        List<Location> neighbors = new ArrayList<>();
+
+        for (int[] move : moves)
+        {
+            int newRow = startRow + move[0];
+            int newCol = startCol + move[1];
+            
+            Location loc = new Location(newRow, newCol);
+
+            if (newRow >= 0 &&
+                newRow < maze.length &&
+                newCol >= 0 &&
+                newCol < maze[0].length &&
+                maze[newRow][newCol] != 1 &&
+                !visited.contains(loc)) 
+            {
+                neighbors.add(loc);
+            }
+        }
+
+        return neighbors;
     }
 }

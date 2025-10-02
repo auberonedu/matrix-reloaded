@@ -57,6 +57,20 @@ public class MazeSolverTest {
     }
 
     // TODO 1: Write more tests for reachable
+    @Test
+    void testReachableIfOutOfBoundsUp() {
+        int[][] maze = {
+            {0, 0 ,0 },
+            {0, 3, 0},
+            {0, 0, 0}
+        };
+
+        List<Location> path = MazeSolver.reachable(0, 4, maze)
+
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.reachable(0, 0, maze)
+        );
+    }
 
     // TODO 2: Write good tests for solve
     // test allow for ANY valid path, not too strict w/ tests (idea: make array of working paths then return index 0 one)
@@ -125,5 +139,5 @@ public class MazeSolverTest {
         assertEquals(new Location(1, 1), path.get(0));
     }
 
-    // test for out of bounds!
+    // test for out of bounds (for both)!
 }
