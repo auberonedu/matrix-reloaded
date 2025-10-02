@@ -158,4 +158,18 @@ public class MazeSolverTest {
         assertNull(path);
     }
 
+    @Test
+    void testSolvePathIsValid() {
+        int[][] maze = {
+            {0, 0, 0},
+            {1, 1, 0},
+            {0, 1, 3}
+        };
+        
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        assertNotNull(path);
+        
+        assertEquals(new Location(0, 0), path.get(0));
+        assertEquals(new Location(2, 2), path.get(path.size() - 1));
+    }
 }
