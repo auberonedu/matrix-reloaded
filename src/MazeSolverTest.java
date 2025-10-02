@@ -136,4 +136,16 @@ public class MazeSolverTest {
         assertEquals(new Location(0, 0), path.get(0));
     }
 
+    @Test
+    void testSolveSingleCellTreasure() {
+        int[][] maze = {
+            {3}
+        };
+        
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        assertNotNull(path);
+        assertEquals(1, path.size());
+        assertEquals(new Location(0, 0), path.get(0));
+    }
+
 }
