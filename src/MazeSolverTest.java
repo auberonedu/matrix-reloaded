@@ -73,6 +73,13 @@ public class MazeSolverTest {
         assertFalse(MazeSolver.reachable(0, 0, maze));
     }
 
+    @Test
+    void testReachableSingleCellTreasureReturnsTrue() {
+        int[][] maze = {
+            {3}
+        };
+        assertTrue(MazeSolver.reachable(0, 0, maze));
+    }
 
 
     // TODO 2: Write good tests for solve
