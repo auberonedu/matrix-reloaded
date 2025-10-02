@@ -169,10 +169,46 @@ public class MazeSolver {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
         
-        
-        
-        
-        
-        return null;
-    }//end solve
+       //if inside a wall
+    if(maze[row][col] ==1) throw new IllegalArgumentException(
+        "Inside a wall! Location= " + row +","+ col);
+
+    //if out of bounds
+    if(row < 0 || col <0 || 
+       row >=maze.length || 
+       col >=maze[0].length) throw new IllegalArgumentException(
+        "Out of bounds! Location= " + row +","+ col);
+
+    boolean[][] visited = new boolean[maze.length][maze[0].length];
+
+    return solve(row, col, maze, visited);
+}//end solve
+
+private static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited){
+    //found treasure
+    if(maze[row][col] == 3){
+        List<Location> path = new ArrayList<>();
+        path.add(new Location(row, col)); //adds treasure location
+        return path;
+    }//end if
+
+    visited[row][col] = true;
+
+    List<int[]> neighbors = validNeighbors(row, col, maze, visited);
+
+    //tries each neighbor
+    for(int[] neighbor : neighbors){
+        List<Location> pathFromNeighbor = solve(neighbor[0], neighbor[1], maze, visited);
+        if(pathFromNeighbor != null){
+
+            pathFromNeighbor.add(0, new Location(row, col));
+            return pathFromNeighbor;
+
+        }//end if
+    }//end for
+
+    return null; //no path found
+
+    }//end solve2
+
 }//end file
