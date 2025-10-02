@@ -1,5 +1,7 @@
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 public class MazeSolverTest {
@@ -119,6 +121,19 @@ public class MazeSolverTest {
         };
 
         assertNull(MazeSolver.solve(2, 1, maze));
+    }
+
+    @Test
+    void testSolveStartOnTreasure() {
+        int[][] maze = {
+            {3, 1},
+            {0, 0}
+        };
+        
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        assertNotNull(path);
+        assertEquals(1, path.size());
+        assertEquals(new Location(0, 0), path.get(0));
     }
 
 }
