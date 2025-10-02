@@ -56,6 +56,15 @@ public class MazeSolverTest {
     }
 
     // TODO 1: Write more tests for reachable
+    @Test
+    void testReachableStartingOnTreasureReturnsTrue() {
+        int[][] maze = {
+            {3, 1},
+            {0, 0}
+        };
+        assertTrue(MazeSolver.reachable(0, 0, maze));
+    }
+
 
     // TODO 2: Write good tests for solve
 }
