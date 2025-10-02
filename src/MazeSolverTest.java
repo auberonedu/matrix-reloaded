@@ -108,4 +108,17 @@ public class MazeSolverTest {
         assertEquals(new Location(0, 1), path.get(0));
         assertEquals(new Location(3, 4), path.get(path.size() - 1));
     }
+    @Test
+    void testSolveNoPathReturnsNull() {
+        int[][] maze = {
+            {0, 0, 0, 1, 1},
+            {0, 1, 1, 0, 0},
+            {0, 0, 1, 0, 1},
+            {0, 0, 1, 3, 1},
+            {1, 1, 1, 1, 1}
+        };
+
+        assertNull(MazeSolver.solve(2, 1, maze));
+    }
+
 }
