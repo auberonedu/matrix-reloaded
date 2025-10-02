@@ -169,6 +169,7 @@ public class MazeSolver {
         for (Location location : neighbors) {
             List<Location> returnedPath = solve(location.row(), location.col(), maze, visited);
             if (returnedPath != null) {
+                path.add(new Location(row, col));
                 path.addAll(returnedPath);
                 return path;
             }
