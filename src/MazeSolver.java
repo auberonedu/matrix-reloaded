@@ -134,6 +134,43 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
+
+        if(row < 0 || col < 0 || row >= maze.length || col >= maze[0].length)
+        {
+            throw new IllegalArgumentException("Out of bounds");
+        }
+
+        if(maze[row][col] == 1)
+        {
+            throw new IllegalArgumentException("Start is a wall");
+        }
+
+        boolean[][] visited = new boolean[maze.length][maze[0].length];
+
+        return solve(row, col, maze, visited);
+    }
+
+
+    public static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited)
+    {
+        if(maze[row][col] == 3)
+        {
+            List<Location> path = new ArrayList<>();
+            path.add(new Location(row, col))
+            return path;
+        }
+
+        visited[row][col] = true;
+
+        for(int[] neighbor : validNeighbors(row, col, maze, visited))
+        {
+            List<Location> path = solve(neighbor[0], neighbor[1], maze, visited);
+            if(path != null)
+            {
+                path.add(0, new Location(row, col));
+                return path;
+            }
+        }
         return null;
     }
 }
