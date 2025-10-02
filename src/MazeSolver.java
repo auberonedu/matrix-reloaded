@@ -131,7 +131,7 @@ public class MazeSolver {
      * @return a list of locations indiciating any valid path, or null if there is no valid path.
      * @throws IllegalArgumentException if the position is out of bounds of the maze or is in a wall.
      */
-    public static List<Location> solve(int row, int col, int[][] maze) {
+    public static List<Location> solveable(int row, int col, int[][] maze) {
         if(row < 0 || col < 0 || row >= maze.length ||col >= maze[0].length){
              throw new IllegalArgumentException("Out of bounds location: " + row + "," + col);
         }
@@ -141,11 +141,11 @@ public class MazeSolver {
         }
 
         boolean[][] visited = new boolean[maze.length][maze[0].length];
-        return reachable(row, col, maze, visited);
+        return solveable(row, col, maze, visited);
 
     }
 
-    private static List<Location> reachable(int row, int col, int[][] maze, boolean[][] visited){
+    private static List<Location> solveable(int row, int col, int[][] maze, boolean[][] visited){
         if(maze[row][col] == 3) {
             List<Location> path = new ArrayList<>();
             path.add(new Location(row, col));
@@ -155,9 +155,9 @@ public class MazeSolver {
         visited[row][col] = true;
        
     
-    List<int[]> neighbors = validNeighbors(row, col, maze, visited);
+    List<int[]> neighbors = goodNeighbors(row, col, maze, visited);
     for(int[] neighbor : neighbors){
-        List<Location> path = reachable(neighbor[0], neighbor[1], maze, visited);
+        List<Location> path = solveable(neighbor[0], neighbor[1], maze, visited);
         if (path != null){
             path.add(0, new Location(row, col));
             return path;
@@ -166,7 +166,7 @@ public class MazeSolver {
         return null;
     }
 
-    private static List<int[]> validNeighbors(int row, int col, int[][] maze, boolean[][] visited){
+    private static List<int[]> goodNeighbors(int row, int col, int[][] maze, boolean[][] visited){
         int[][] moves = {
             {-1, 0}, //UP
             { 1, 0}, //DOWN
