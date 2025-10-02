@@ -94,9 +94,38 @@ public class MazeSolverTest {
 
     // TODO 2: Write good tests for solve
 
+    @Test
+    void testSolve1() {
+        int[][] maze = {
+            {0, 0, 0},
+            {1, 1, 0},
+            {0, 0, 3}
+        };
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        assertNotNull(path);
+        assertEquals(2, path.get(path.size()-1).row());
+        assertEquals(2, path.get(path.size()-1).col());
+    }
 
-//soon
+    @Test
+    void testSolve2() {
+        int[][] maze = {
+            {0, 1, 0},
+            {1, 1, 1},
+            {0, 0, 3}
+        };
+        assertNull(MazeSolver.solve(0, 0, maze));
+    }
 
-
+    @Test
+    void testSolve3() {
+        int[][] maze = {
+            {1, 0, 0},
+            {0, 0, 3}
+        };
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.solve(0, 0, maze)
+        );
+    }
 
 }//end file
