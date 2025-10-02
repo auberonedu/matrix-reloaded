@@ -59,7 +59,7 @@ public class MazeSolver {
      */
     public static boolean reachable(int row, int col, int[][] maze) {
         // We will solve this together as a class.
-        if (row < 0 || col < 0 || row >= maze.length || col >= maze[0].length) {
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[row].length) {
             throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
         }
         if (maze[row][col] == 1) {
@@ -86,18 +86,28 @@ public class MazeSolver {
 
     // [{}, {}]
     public static List<int[]> validNeighbors(int startRow, int startCol, int[][] maze, boolean[][] visited) {
-        int[][] moves = {
-            {-1, 0}, // UP
-            {1, 0}, // DOWN
-            {0, 1}, // RIGHT
-            {0, -1} // LEFT
-        };
+        // int[][] moves = {
+        //     {-1, 0}, // UP
+        //     {1, 0}, // DOWN
+        //     {0, 1}, // RIGHT
+        //     {0, -1} // LEFT
+        // };
+
+        List<Location> moves = new ArrayList<>();
+        Location up = new Location(-1, 0);
+        Location down = new Location(1, 0);
+        Location right = new Location(0, 1);
+        Location left = new Location(0, -1);
+        moves.add(up);
+        moves.add(down);
+        moves.add(right);
+        moves.add(left);
 
         List<int[]> neighbors = new ArrayList<>();
 
-        for(int[] move : moves) {
-            int newRow = startRow + move[0];
-            int newCol = startCol + move[1];
+        for(Location move : moves) {
+            int newRow = startRow + move.row();
+            int newCol = startCol + move.col();
 
             if(newRow >= 0 &&
                newRow < maze.length &&
