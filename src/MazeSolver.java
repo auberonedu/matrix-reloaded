@@ -168,14 +168,15 @@ public class MazeSolver {
         //check if position is a wall or out of bounds
         //  if yes to either throw error 
         //Once 3 is reached return list of locations (valid path)
-        if(maze[row][col] == 1)
-        {
-            throw new IllegalArgumentException("location is a wall");
-        }
         if(row < 0 || col < 0 || row >= maze.length || col >= maze[0].length)
         {
             throw new IllegalArgumentException("location is out of bounds");
         }
+        if(maze[row][col] == 1)
+        {
+            throw new IllegalArgumentException("location is a wall");
+        }
+        
         if(!reachable(row, col, maze))
         {
             return null;
