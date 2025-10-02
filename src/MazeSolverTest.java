@@ -109,8 +109,6 @@ public class MazeSolverTest {
                 { 1, 0, 0, 1, 3, 1 },
         };
 
-        Location start = new Location(0, 1);
-        Location end = new Location(3, 4);
         List<Location> path = MazeSolver.solve(0, 1, maze);
 
         assertEquals(path, null);
@@ -133,6 +131,14 @@ public class MazeSolverTest {
 
     @Test
     void testSolveStartingInWall() {
+        int[][] maze = {
+                { 1, 0, 0, 0, 1, 1 },
+                { 0, 0, 1, 0, 0, 0 },
+                { 1, 0, 0, 1, 0, 1 },
+                { 1, 0, 0, 1, 3, 1 },
+        };
 
+        assertThrows(IllegalArgumentException.class,
+                () -> MazeSolver.solve(0, 0, maze));
     }
 }
