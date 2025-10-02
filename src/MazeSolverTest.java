@@ -81,6 +81,16 @@ public class MazeSolverTest {
         assertTrue(MazeSolver.reachable(0, 0, maze));
     }
 
+    @Test
+    void testReachableStartOutOfBounds() {
+        int[][] maze = {
+            {0, 0},
+            {0, 3}
+        };
+        assertThrows(IllegalArgumentException.class,
+            ()->MazeSolver.reachable(-1, 0, maze)
+        );
+    }
 
     // TODO 2: Write good tests for solve
 }
