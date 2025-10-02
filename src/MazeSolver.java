@@ -149,17 +149,13 @@ public class MazeSolver {
     }
 
     private static List<Location> solve(int row, int col, int[][] maze, boolean[][] visited) {
-        if (maze[row][col] == 1 || visited[row][col]) {
-            return null;
-        }
+        visited[row][col] = true;
 
         if (maze[row][col] == 3) {
             List<Location> path = new ArrayList<>();
             path.add(new Location(row, col));
             return path;
         }
-
-        visited[row][col] = true;
 
         List<int[]> neighbors = validNeighbors(row, col, maze, visited);
         for (int[] neighbor : neighbors) {
@@ -173,31 +169,5 @@ public class MazeSolver {
             }
         }
         return null;
-    }
-
-    public static List<int[]> validNeighbors2(int row, int col, int[][] maze, boolean[][] visited) {
-        visited[row][col] = true;
-
-        int[][] moves = {
-            {-1, 0}, //UP
-            {1, 0}, //DOWN
-            {0, 1}, //RIGHT
-            {0, -1} //LEFT
-        };
-
-        List<int[]> neighbors = new ArrayList<>();
-        for (int[] move : moves) {
-            int newRow = row + move[0];
-            int newCol = col + move[1];
-
-            if (newRow >= 0 && newRow < maze.length &&
-                newCol >= 0 && newCol < maze[0].length &&
-                maze[newRow][newCol] != 1 &&
-                !visited[newRow][newCol]) {
-                    neighbors.add(new int[]{newRow, newCol});
-            }
-        }
-        return neighbors;
-
     }
 }
