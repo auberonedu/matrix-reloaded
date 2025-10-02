@@ -143,13 +143,16 @@ public class MazeSolver {
     public static List<Location> solve(int row, int col, int[][] maze) {
         // You will solve this with a partner
         // Please do not begin work on this until directed to!
+        
+        if (row < 0 || col < 0 || row >= maze.length || col >= maze[row].length) {
+            throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
+        }
+        
         if (maze[row][col] == 1) {
             throw new IllegalArgumentException("Location is in wall: " + row + ", " + col);
         }
 
-        if (row < 0 || col < 0 || row >= maze.length || col >= maze[row].length) {
-            throw new IllegalArgumentException("Out of bounds location: " + row + ", " + col);
-        }
+        
 
         boolean[][] visited = new boolean[maze.length][maze[0].length];
 

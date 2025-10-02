@@ -141,4 +141,18 @@ public class MazeSolverTest {
         assertThrows(IllegalArgumentException.class,
                 () -> MazeSolver.solve(0, 0, maze));
     }
+
+    @Test
+    void testSolveStartingOutOfBounds() {
+        int[][] maze = {
+                { 1, 0, 0, 0, 1, 1 },
+                { 0, 0, 1, 0, 0, 0 },
+                { 1, 0, 0, 1, 0, 1 },
+                { 1, 0, 0, 1, 3, 1 },
+        };
+
+        assertThrows(IllegalArgumentException.class,
+                () -> MazeSolver.solve(0, 6, maze));
+
+    }
 }
