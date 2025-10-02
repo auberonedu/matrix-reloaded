@@ -148,4 +148,14 @@ public class MazeSolverTest {
         assertEquals(new Location(0, 0), path.get(0));
     }
 
+    @Test
+    void testSolveSingleCellNoTreasure() {
+        int[][] maze = {
+            {0}
+        };
+        
+        List<Location> path = MazeSolver.solve(0, 0, maze);
+        assertNull(path);
+    }
+
 }
