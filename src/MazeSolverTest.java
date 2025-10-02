@@ -56,20 +56,37 @@ public class MazeSolverTest {
         );
     }
 
-    // TODO 1: Write more tests for reachable
     @Test
-    void testReachableIfOutOfBoundsUp() {
+    void testReachableOutOfBoundsThrows() {
         int[][] maze = {
-            {0, 0 ,0 },
+            {0, 0, 0},
             {0, 3, 0},
             {0, 0, 0}
         };
 
-        List<Location> path = MazeSolver.reachable(0, 4, maze)
+        
+    // if row too high
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.reachable(3, 1, maze));
 
-        assertThrows(IllegalArgumentException.class,
-            ()->MazeSolver.reachable(0, 0, maze)
-        );
+    // if column too high
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.reachable(1, 3, maze));
+
+    // if negative row
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.reachable(-1, 0, maze));
+
+    // if negative column
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.reachable(0, -1, maze));
+    }
+
+    @Test
+    void testReachableIfStartingAtTreasure() {
+        int[][] maze = {
+            {0, 0, 0},
+            {0, 3, 0},
+            {0, 0, 0}
+        };
+
+        assertTrue(MazeSolver.reachable(1, 1, maze));
     }
 
     @Test
@@ -127,5 +144,25 @@ public class MazeSolverTest {
         assertEquals(3, maze[last.row()][last.col()]);
     }
 
-    // test for out of bounds (for both)!
+    @Test
+    void testSolveStartingOutOfBoundsThrows() {
+        int[][] maze = {
+            {0, 0, 0},
+            {0, 3, 0},
+            {0, 0, 0}
+        };
+
+        
+    // if row too high
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.solve(3, 1, maze));
+
+    // if column too high
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.solve(1, 3, maze));
+
+    // if negative row
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.solve(-1, 0, maze));
+
+    // if negative column
+    assertThrows(IllegalArgumentException.class, () -> MazeSolver.solve(0, -1, maze));
+    }
 }
