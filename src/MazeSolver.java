@@ -4,15 +4,15 @@ import java.util.Arrays;
 
 public class MazeSolver {
     public static void main(String[] args) {
-        Location myLocation = new Location(4,7);
+        // Location myLocation = new Location(4,7);
         // System.out.println(myLocation);
 
-        Location myLocation2 = new Location(myLocation.row()+1,myLocation.col());
-        System.out.println(myLocation.equals(myLocation2));
+        // Location myLocation2 = new Location(myLocation.row()+1,myLocation.col());
+        // System.out.println(myLocation.equals(myLocation2));
 
         int[][] maze1 = {
             {1, 0, 0, 0, 1, 1},
-            {0, 0, 1, 0, 0, 0},
+            {0, 0, 1, 0, 1, 0},
             {1, 0, 0, 1, 0, 1},
             {1, 0, 0, 1, 3, 1},
         };
@@ -22,9 +22,9 @@ public class MazeSolver {
             List<Location> path = solve(0, 1, maze1);
 
             if (path == null) {
-                System.out.println("No path found.");
+                System.out.println(false);
             } else {
-                System.out.println("Path to treasure:");
+                System.out.println(true);
                 for (Location loc : path) {
                     System.out.println(loc);
                 }
@@ -170,7 +170,7 @@ public class MazeSolver {
         List<Location> path = new ArrayList<>();
 
         if (dfs(row, col, maze, visited, path)) {
-            return path; // found a path including start and treasure
+            return path;
         }
         return null;
     }
